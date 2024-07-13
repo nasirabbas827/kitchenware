@@ -100,6 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group text-center">
                 <input type="submit" value="Log in" class="btn btn-primary">
+                <input class="btn btn-dark"  type="reset" value="Clear All">
+
             </div>
         </form>
         <p class="text-center">Have'nt any Account <a href="register.php">Register here</a></p>

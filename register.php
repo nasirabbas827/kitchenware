@@ -15,30 +15,38 @@ $username_err = $password_err = $usertype_err = $email_err = $phone_err = $city_
 // check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // validate username
-    if (empty(trim($_POST["username"]))) {
-        $username_err = "Please enter a username.";
+  // validate username
+if (empty(trim($_POST["username"]))) {
+    $username_err = "Please enter a username.";
+} elseif (strlen(trim($_POST["username"])) > 12) {
+    $username_err = "Username must not be more than 12 characters.";
+} elseif (preg_match('/\s/', trim($_POST["username"]))) {
+    $username_err = "Username must not contain spaces.";
+} else {
+    // check if username already exists in database
+    $sql = "SELECT id FROM users WHERE username = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $param_username);
+    $param_username = trim($_POST["username"]);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    if (mysqli_stmt_num_rows($stmt) == 1) {
+        $username_err = "This username is already taken.";
     } else {
-        // check if username already exists in database
-        $sql = "SELECT id FROM users WHERE username = ?";
-        $stmt = mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $param_username);
-        $param_username = trim($_POST["username"]);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_store_result($stmt);
-        if (mysqli_stmt_num_rows($stmt) == 1) {
-            $username_err = "This username is already taken.";
-        } else {
-            $username = trim($_POST["username"]);
-        }
+        $username = trim($_POST["username"]);
     }
+}
 
-    // validate password
-    if (empty(trim($_POST["password"]))) {
-        $password_err = "Please enter a password.";
-    } else {
-        $password = trim($_POST["password"]);
-    }
+// validate password
+if (empty(trim($_POST["password"]))) {
+    $password_err = "Please enter a password.";
+} elseif (strlen(trim($_POST["password"])) < 8) {
+    $password_err = "Password must be at least 8 characters long.";
+} elseif (!preg_match('/[\W_]/', trim($_POST["password"]))) { // \W matches any non-word character, which includes special characters
+    $password_err = "Password must include at least one special character.";
+} else {
+    $password = trim($_POST["password"]);
+}
 
     // validate user type
     if (empty(trim($_POST["usertype"]))) {
@@ -213,6 +221,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group text-center">
                 <input type="submit" class="btn btn-primary" value="Register">
+                <input class="btn btn-dark"  type="reset" value="Clear All">
             </div>
         </form>
 
