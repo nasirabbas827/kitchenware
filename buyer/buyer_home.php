@@ -79,6 +79,57 @@ $result_products = mysqli_query($conn, $sql_products);
     <?php
     include ('buyer_navbar.php');
     ?>
+<!-- New Arrival Section -->
+<div class="container mt-5">
+    <h2 class="mb-4">New Arrivals</h2>
+    <div id="new-arrivals-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <?php
+            // Retrieve latest added products
+            $sql_new_arrivals = "SELECT * FROM products ORDER BY Timestamp DESC LIMIT 5";
+            $result_new_arrivals = mysqli_query($conn, $sql_new_arrivals);
+            $products_count = mysqli_num_rows($result_new_arrivals);
+            $active = true; // Set the first item as active
+
+            // Display products in carousel format
+            for ($i = 0; $i < $products_count; $i += 2) {
+                ?>
+                <div class="carousel-item <?php echo $active ? 'active' : ''; ?>">
+                    <div class="row">
+                        <?php
+                        for ($j = $i; $j < min($i + 3, $products_count); $j++) {
+                            mysqli_data_seek($result_new_arrivals, $j);
+                            $row_new_arrival = mysqli_fetch_assoc($result_new_arrivals);
+                            ?>
+                            <div class="col-md-4">
+                                <div class="card" style="height: 100%;">
+                                    <img class="card-img-top" src="../admin/products_images/<?php echo $row_new_arrival['ImageURL']; ?>" alt="Product Image" height="200px">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $row_new_arrival['ProductName']; ?></h5>
+                                        <p class="card-text"><?php echo number_format($row_new_arrival['Price'], 2); ?> Pkr</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php
+                $active = false; // Set active to false after the first item
+            }
+            ?>
+        </div>
+        <a class="carousel-control-prev" href="#new-arrivals-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#new-arrivals-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
 
     <div class="container mt-5">
         <h2 class="mb-4">Available Products</h2>

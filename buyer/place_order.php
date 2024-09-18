@@ -76,7 +76,7 @@ if (mysqli_query($conn, $sql_insert_order)) {
     $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP host
     $mail->SMTPAuth = true;
     $mail->Username = 'nasiryt.827@gmail.com'; // Replace with your SMTP username
-    $mail->Password = 'htsw yfar odgt siov'; // Replace with your SMTP password
+    $mail->Password = 'mtvp ruzp aqfu tfxt'; // Replace with your SMTP password
     $mail->Port = 587; // Replace with your SMTP port (usually 587)
 
     // Send the email

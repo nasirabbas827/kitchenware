@@ -132,7 +132,7 @@ if (empty(trim($_POST["password"]))) {
             $mail->Host = 'smtp.gmail.com';  // Specify SMTP server
             $mail->SMTPAuth = true;
             $mail->Username = 'nasiryt.827@gmail.com'; // SMTP username
-            $mail->Password = 'htswyfarodgtsiov';   // SMTP password
+            $mail->Password = 'mtvp ruzp aqfu tfxt';   // SMTP password
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
